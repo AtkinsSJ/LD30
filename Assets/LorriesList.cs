@@ -104,7 +104,10 @@ public class LorriesList : MonoBehaviour {
 			lorryNames[i] = lorries[i].lorryName;
 		}
 
-		selectedLorry = GUILayout.SelectionGrid(selectedLorry, lorryNames, 1);
+		int newlySelectedLorry = GUILayout.SelectionGrid(selectedLorry, lorryNames, 1);
+		if (newlySelectedLorry != selectedLorry && newlySelectedLorry != -1) {
+			SelectLorry(newlySelectedLorry);
+		}
 
 		GUILayout.Label("");
 
@@ -124,13 +127,13 @@ public class LorriesList : MonoBehaviour {
 		lorry.lorryName = "Lorry " + lorries.Count;
 
 		// Open the selection window for the new lorry!
-		selectedLorry = lorries.Count - 1;
+		SelectLorry(lorries.Count - 1);
 	}
 
 	void LorryInspectionWindow(int windowId) {
 
 		if (GUI.Button(closeButtonRect, "X")) {
-			selectedLorry = -1;
+			UnselectLorry();
 			return;
 		}
 
@@ -289,8 +292,24 @@ public class LorriesList : MonoBehaviour {
 		}
 	}
 
+	private void SelectLorry(int newLorryID) {
+		if (selectedLorry != -1) {
+			lorries[selectedLorry].Selected = false;
+		}
+
+		selectedLorry = newLorryID;
+		lorries[selectedLorry].Selected = true;
+	}
+
+	private void UnselectLorry() {
+		if (selectedLorry != -1) {
+			lorries[selectedLorry].Selected = false;
+		}
+		selectedLorry = -1;
+	}
+
 	public void SelectLorry(Lorry lorry) {
-		selectedLorry = lorries.IndexOf(lorry);
+		SelectLorry(lorries.IndexOf(lorry));
 	}
 
 	public void OnGameWon() {

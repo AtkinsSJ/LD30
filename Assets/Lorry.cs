@@ -13,6 +13,8 @@ public class Lorry : MonoBehaviour {
 	private State state = State.Idle;
 
 	private LorriesList lorriesList;
+	private MeshRenderer lorrySprite;
+	private Color normalColour;
 
 	public Route route = new Route();
 	private int routeStopIndex;
@@ -32,12 +34,46 @@ public class Lorry : MonoBehaviour {
 		set { running = value; }
 	}
 
+	private bool selected = false;
+	public bool Selected {
+		get { return selected; }
+		set {
+			selected = value;
+			if (lorrySprite != null) {
+				if (value) {
+					lorrySprite.material.color = Color.white;
+				} else {
+					lorrySprite.material.color = normalColour;
+				}
+			}
+		}
+	}
+
 	private PopupManager popups;
 
 	// Use this for initialization
 	void Start() {
 		lorriesList = GetComponentInParent<LorriesList>();
 		popups = transform.Find("/PopupManager").GetComponent<PopupManager>();
+		lorrySprite = GetComponentInChildren<MeshRenderer>();
+
+		// Make lorry a random colour
+		switch (Random.Range(0, 3)) {
+			case 0:
+				lorrySprite.material.color = new Color(Random.Range(0f, 0.5f), Random.Range(0.5f, 1f), Random.Range(0.5f, 1f));
+				break;
+			case 1:
+				lorrySprite.material.color = new Color(Random.Range(0.5f, 1f), Random.Range(0f, 0.5f), Random.Range(0.5f, 1f));
+				break;
+			case 2:
+				lorrySprite.material.color = new Color(Random.Range(0.5f, 1f), Random.Range(0.5f, 1f), Random.Range(0f, 0.5f));
+				break;
+		}
+		normalColour = lorrySprite.material.color;
+
+		if (selected) {
+			lorrySprite.material.color = Color.white;
+		}
 	}
 
 	public State getState() {
