@@ -44,13 +44,13 @@ public class LorriesList : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		windowRect = new Rect(10, 10, 250, 100);
-		lorryWindowRect = new Rect(310, 30, 250, 100);
+		lorryWindowRect = new Rect(310, 30, 300, 100);
 		closeButtonRect = new Rect(230, 0, 20, 20);
-		addOrderWindowRect = new Rect(610, 50, 250, 100);
+		addOrderWindowRect = new Rect(610, 50, 300, 100);
 
 		galaxy = transform.Find("/Galaxy").GetComponent<Galaxy>();
 
-		modalWindowRect = new Rect(0, 0, 500, 350);
+		modalWindowRect = new Rect(0, 0, 500, 400);
 	}
 
 	void OnGUI() {
@@ -95,7 +95,7 @@ public class LorriesList : MonoBehaviour {
 		GUILayout.Label("Welcome to LORRIES IN SPAAAAAACE!");
 		GUILayout.Label("Buy space-lorries, give them orders to buy/sell goods at different planets, and they'll go off and make you money!");
 		GUILayout.Label("Once you're rich enough, buy whole planets for regular tax income.");
-		GUILayout.Label("You win when you own all the plnets, but if you go broke, you lose!");
+		GUILayout.Label("You win when you own all the plnets, but if you go broke, you lose! Be careful that your lorries don't spend all of your money!");
 		GUILayout.FlexibleSpace();
 		GUILayout.Label("This is a 72-hour game for Ludum Dare 30, (ludumdare.com) by Sam Atkins (samatkins.co.uk)");
 		GUILayout.FlexibleSpace();
@@ -149,6 +149,7 @@ public class LorriesList : MonoBehaviour {
 
 	void LorryInspectionWindow(int windowId) {
 
+		closeButtonRect.x = lorryWindowRect.width - closeButtonRect.width;
 		if (GUI.Button(closeButtonRect, "X")) {
 			UnselectLorry();
 			return;
@@ -233,6 +234,7 @@ public class LorriesList : MonoBehaviour {
 	}
 
 	void AddOrderWindow(int windowId) {
+		closeButtonRect.x = addOrderWindowRect.width - closeButtonRect.width;
 		if (GUI.Button(closeButtonRect, "X")) {
 			showAddOrderWindow = false;
 			return;

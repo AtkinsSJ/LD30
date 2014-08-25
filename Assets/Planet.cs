@@ -153,6 +153,7 @@ public class Planet : MonoBehaviour {
 
 	private IEnumerator PlanetUpdate() {
 		while (true) {
+			Debug.Log("PlanetUpdate for " + planetName);
 			if (ownedByPlayer) {
 				// Give player income
 				lorriesList.ModifyFunds(taxValue);
