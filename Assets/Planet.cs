@@ -85,11 +85,11 @@ public class Planet : MonoBehaviour {
 					break;
 
 				case 1: // We sell this good
-					goodValues[i] = Random.Range(2, 10);
+					goodValues[i] = Good.GOODS[i].GenerateBuyPrice();
 					break;
 
 				case 2: // We buy this good
-					goodValues[i] = -Random.Range(2, 10);
+					goodValues[i] = -Good.GOODS[i].GenerateSellPrice();
 					break;
 			}
 		}
