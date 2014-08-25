@@ -79,10 +79,11 @@ public class LorriesList : MonoBehaviour {
 	void GameStartWindow(int windowID) {
 		GUILayout.Label("Welcome to LORRIES IN SPAAAAAACE!");
 		GUILayout.Label("Buy space-lorries, give them orders to buy/sell goods at different planets, and they'll go off and make you money!");
-		GUILayout.Label("If you go broke, you lose! Try and see how rich you can get. (An actual goal is coming later, hopefully.)");
+		GUILayout.Label("Once you're rich enough, buy whole planets for regular tax income.");
+		GUILayout.Label("You win when you own all the plnets, but if you go broke, you lose!");
 		GUILayout.FlexibleSpace();
 		GUILayout.Label("CONTROLS");
-		GUILayout.Label("Arrows/WASD to move the camera, zoom with the mouse wheel. Left-click on planets to inspect them.");
+		GUILayout.Label("Arrows/WASD to move the camera, zoom with the mouse wheel. Left-click on planets or space-lorries to inspect them.");
 		GUILayout.FlexibleSpace();
 		GUILayout.Label("CHOOSE YOUR COMPANY NAME!");
 		companyName = GUILayout.TextField(companyName);
@@ -301,7 +302,7 @@ public class LorriesList : MonoBehaviour {
 
 		GUILayout.FlexibleSpace();
 
-		GUILayout.Label(string.Format("You devoured the galaxy in {0:[h’]:’mm’:’ss[.FFF]}", timespan));
+		GUILayout.Label(string.Format("You crushed the spirits of the galaxy's inhabitants in {0:[h’]:’mm’:’ss[.FFF]}", timespan));
 
 		GUILayout.FlexibleSpace();
 
