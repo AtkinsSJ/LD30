@@ -82,6 +82,8 @@ public class LorriesList : MonoBehaviour {
 		GUILayout.Label("Once you're rich enough, buy whole planets for regular tax income.");
 		GUILayout.Label("You win when you own all the plnets, but if you go broke, you lose!");
 		GUILayout.FlexibleSpace();
+		GUILayout.Label("This is a 72-hour game for Ludum Dare 30, (ludumdare.com) by Sam Atkins (samatkins.co.uk)");
+		GUILayout.FlexibleSpace();
 		GUILayout.Label("CONTROLS");
 		GUILayout.Label("Arrows/WASD to move the camera, zoom with the mouse wheel. Left-click on planets or space-lorries to inspect them.");
 		GUILayout.FlexibleSpace();
@@ -275,7 +277,7 @@ public class LorriesList : MonoBehaviour {
 	}
 
 	void GameLostWindow(int windowID) {
-		GUILayout.Label("You went bankrupt! Sorry to hear about that.");
+		GUILayout.Label("You went bankrupt! Sorry to hear about that. Maybe next time things will work out better for you.");
 
 		GUILayout.FlexibleSpace();
 
