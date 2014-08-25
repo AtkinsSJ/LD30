@@ -16,6 +16,7 @@ public class LorriesList : MonoBehaviour {
 	private Rect windowRect;
 	private int selectedLorry = -1;
 	private Rect lorryWindowRect;
+	private Vector2 lorryWindowScroll = new Vector2();
 	private Rect closeButtonRect;
 
 	private bool showAddOrderWindow = false;
@@ -65,7 +66,7 @@ public class LorriesList : MonoBehaviour {
 			if (gameWon) {
 				GUI.ModalWindow((int)WindowIDs.GameOver, modalWindowRect, this.GameWonWindow, "YOU WIN!");
 			} else if (playing) {
-				windowRect = GUILayout.Window((int)WindowIDs.LorriesList, windowRect, this.LorriesWindow, "Lorries");
+				windowRect = GUILayout.Window((int)WindowIDs.LorriesList, windowRect, this.LorriesWindow, "Lorries", GUILayout.Height(Screen.height-20));
 
 				if (selectedLorry != -1) {
 					lorryWindowRect = GUILayout.Window((int)WindowIDs.Lorry, lorryWindowRect, this.LorryInspectionWindow, "Lorry");
@@ -111,10 +112,12 @@ public class LorriesList : MonoBehaviour {
 			lorryNames[i] = lorries[i].lorryName;
 		}
 
+		lorryWindowScroll = GUILayout.BeginScrollView(lorryWindowScroll, GUILayout.MinHeight(20), GUILayout.ExpandHeight(true), GUILayout.MaxHeight(Screen.height - 100));
 		int newlySelectedLorry = GUILayout.SelectionGrid(selectedLorry, lorryNames, 1);
 		if (newlySelectedLorry != selectedLorry && newlySelectedLorry != -1) {
 			SelectLorry(newlySelectedLorry);
 		}
+		GUILayout.EndScrollView();
 
 		GUILayout.Label("");
 
