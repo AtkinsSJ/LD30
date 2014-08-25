@@ -100,7 +100,7 @@ public class LorriesList : MonoBehaviour {
 		GUILayout.Label("This is a 72-hour game for Ludum Dare 30, (ludumdare.com) by Sam Atkins (samatkins.co.uk)");
 		GUILayout.FlexibleSpace();
 		GUILayout.Label("CONTROLS");
-		GUILayout.Label("Arrows/WASD to move the camera, zoom with the mouse wheel. Left-click on planets or space-lorries to inspect them.");
+		GUILayout.Label("Arrows/WASD to move the camera or right-click and drag, zoom with the mouse wheel. Left-click on planets or space-lorries to inspect them.");
 		GUILayout.FlexibleSpace();
 		GUILayout.Label("CHOOSE YOUR COMPANY NAME!");
 		companyName = GUILayout.TextField(companyName);
