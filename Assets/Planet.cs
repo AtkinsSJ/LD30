@@ -118,7 +118,6 @@ public class Planet : MonoBehaviour {
 	 * Buy goods from planet. Returns the cost as a negative number.
 	 */
 	public int BuyGoodsFrom(GoodType goodType, int quantity) {
-		// TODO: Implement buying from planet
 		int result = quantity * -goodValues[(int)goodType];
 		if (result >= 0) throw new System.ArgumentException("This planet refuses to sell you " + goodType + "!");
 		return result;
@@ -128,7 +127,6 @@ public class Planet : MonoBehaviour {
 	 * Sell goods to planet. Returns the income.
 	 */
 	public int SellGoodsTo(GoodType goodType, int quantity) {
-		// TODO: Implement selling to planet
 		int result = quantity * -goodValues[(int)goodType];
 		if (result <= 0) throw new System.ArgumentException("This planet refuses to buy " + goodType + "!");
 		return result;

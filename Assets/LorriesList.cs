@@ -128,6 +128,10 @@ public class LorriesList : MonoBehaviour {
 		Route.Stop routeStop = lorry.routeStop;
 		Route.Stop[] stops = route.Stops;
 
+		if (GUILayout.Button(lorry.isRunning ? "Click to stop" : "Click to start")) {
+			lorry.isRunning = !lorry.isRunning;
+		}
+
 		switch (lorry.getState()) {
 			case Lorry.State.Idle:
 				GUILayout.Label("Currently idle");
@@ -145,6 +149,18 @@ public class LorriesList : MonoBehaviour {
 					GUILayout.Label(string.Format("Selling {0} to {1}", Good.GOODS[(int)routeStop.goodType].pluralName, routeStop.planet.planetName));
 				}
 				break;
+		}
+
+		GUILayout.Label(string.Format("Capacity: {0} units", lorry.capacity));
+		if (lorry.carrying) {
+			GUILayout.BeginHorizontal();
+			GUILayout.Label(string.Format("Carrying {0} {1}", lorry.capacity, Good.GOODS[(int)lorry.carriedGood].pluralName));
+			if (GUILayout.Button("X")) {
+				lorry.JettisonCargo();
+			}
+			GUILayout.EndHorizontal();
+		} else {
+			GUILayout.Label("Carrying nothing");
 		}
 
 		// List the orders!
@@ -258,5 +274,9 @@ public class LorriesList : MonoBehaviour {
 			Application.LoadLevel("playscene");
 			return;
 		}
+	}
+
+	public void SelectLorry(Lorry lorry) {
+		selectedLorry = lorries.IndexOf(lorry);
 	}
 }

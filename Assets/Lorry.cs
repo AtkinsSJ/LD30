@@ -23,12 +23,21 @@ public class Lorry : MonoBehaviour {
 
 	public string lorryName = "Unnamed Lorry";
 	public int capacity = 20;
-	private bool carrying = false;
+	public bool carrying = false;
 	public GoodType carriedGood;
+
+	private bool running = false;
+	public bool isRunning {
+		get { return running; }
+		set { running = value; }
+	}
+
+	private PopupManager popups;
 
 	// Use this for initialization
 	void Start() {
 		lorriesList = GetComponentInParent<LorriesList>();
+		popups = transform.Find("/PopupManager").GetComponent<PopupManager>();
 	}
 
 	public State getState() {
@@ -37,6 +46,11 @@ public class Lorry : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update() {
+
+		if (!running) {
+
+			return;
+		}
 
 		if (route == null || route.Length == 0) {
 			state = State.Idle;
@@ -50,9 +64,6 @@ public class Lorry : MonoBehaviour {
 	}
 
 	void IdleState() {
-		// Do nothing
-		// TODO: Maybe tell the player that we're idle?
-
 		// If we have a valid route, go!
 		if (route != null && route.Length > 0) {
 			// Start the route!
@@ -87,7 +98,9 @@ public class Lorry : MonoBehaviour {
 				case Route.StopType.Buy:
 					Debug.Log("Buying goods");
 					if (!carrying) {
-						lorriesList.ModifyFunds(routeStop.planet.BuyGoodsFrom(routeStop.goodType, capacity));
+						int expense = routeStop.planet.BuyGoodsFrom(routeStop.goodType, capacity);
+						lorriesList.ModifyFunds(expense);
+						popups.AddExpensePopup(expense, transform.position);
 						carrying = true;
 						carriedGood = routeStop.goodType;
 					} else {
@@ -98,7 +111,9 @@ public class Lorry : MonoBehaviour {
 				case Route.StopType.Sell:
 					Debug.Log("Selling goods");
 					if (carrying && carriedGood == routeStop.goodType) {
-						lorriesList.ModifyFunds(routeStop.planet.SellGoodsTo(routeStop.goodType, capacity));
+						int income = routeStop.planet.SellGoodsTo(routeStop.goodType, capacity);
+						lorriesList.ModifyFunds(income);
+						popups.AddIncomePopup(income, transform.position);
 						carrying = false;
 					} else {
 						Debug.Log( string.Format("Can't sell {0}, because we're not carrying any!", routeStop.goodType));
@@ -123,5 +138,9 @@ public class Lorry : MonoBehaviour {
 		routeStop = route[routeStopIndex];
 		state = State.Goto;
 		Debug.Log("Going to next stop!");
+	}
+
+	internal void JettisonCargo() {
+		carrying = false;
 	}
 }

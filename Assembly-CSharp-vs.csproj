@@ -52,8 +52,10 @@
      <Compile Include="Assets\Good.cs" />
      <Compile Include="Assets\LorriesList.cs" />
      <Compile Include="Assets\Lorry.cs" />
+     <Compile Include="Assets\LorryClickable.cs" />
      <Compile Include="Assets\Planet.cs" />
      <Compile Include="Assets\PlanetNameGenerator.cs" />
+     <Compile Include="Assets\PopupManager.cs" />
      <Compile Include="Assets\Route.cs" />
      <Compile Include="Assets\Windows.cs" />
   </ItemGroup>
