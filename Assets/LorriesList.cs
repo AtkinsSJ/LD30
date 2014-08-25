@@ -61,6 +61,10 @@ public class LorriesList : MonoBehaviour {
 		}
 		modalWindowRect.position = new Vector2((Screen.width - modalWindowRect.width) / 2f, (Screen.height - modalWindowRect.height) / 2f);
 
+		windowRect = WindowUtils.KeepOnScreen(windowRect);
+		lorryWindowRect = WindowUtils.KeepOnScreen(lorryWindowRect);
+		addOrderWindowRect = WindowUtils.KeepOnScreen(addOrderWindowRect);
+
 		if (!started) {
 
 			GUI.ModalWindow((int)WindowIDs.GameStart, modalWindowRect, this.GameStartWindow, "Create Your Company");

@@ -107,6 +107,8 @@ public class Galaxy : MonoBehaviour {
 	}
 
 	void OnGUI() {
+
+		planetWindowRect = WindowUtils.KeepOnScreen(planetWindowRect);
 		if (activePlanetWindow != -1) {
 			planetWindowRect = GUILayout.Window((int)WindowIDs.Planet, planetWindowRect, this.PlanetWindow, activePlanet.planetName);
 			GUI.BringWindowToFront(1);
