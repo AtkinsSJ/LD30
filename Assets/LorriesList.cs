@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System;
 
 public class LorriesList : MonoBehaviour {
 
@@ -28,6 +29,11 @@ public class LorriesList : MonoBehaviour {
 
 	private bool started = false;
 	private bool playing = false;
+	private bool gameWon = false;
+
+	private DateTime startTime;
+	private DateTime endTime;
+	private TimeSpan timespan;
 
 	// Use this for initialization
 	void Start () {
@@ -42,14 +48,16 @@ public class LorriesList : MonoBehaviour {
 	}
 
 	void OnGUI() {
+		modalWindowRect.position = new Vector2((Screen.width - modalWindowRect.width) / 2f, (Screen.height - modalWindowRect.height) / 2f);
 
 		if (!started) {
 
-			modalWindowRect.position = new Vector2((Screen.width - modalWindowRect.width) / 2f, (Screen.height - modalWindowRect.height) / 2f);
 			GUI.ModalWindow((int)WindowIDs.GameStart, modalWindowRect, this.GameStartWindow, "Create Your Company");
 
 		} else {
-			if (playing) {
+			if (gameWon) {
+				GUI.ModalWindow((int)WindowIDs.GameOver, modalWindowRect, this.GameWonWindow, "YOU WIN!");
+			} else if (playing) {
 				windowRect = GUILayout.Window((int)WindowIDs.LorriesList, windowRect, this.LorriesWindow, "Lorries");
 
 				if (selectedLorry != -1) {
@@ -60,8 +68,7 @@ public class LorriesList : MonoBehaviour {
 					}
 				}
 			} else {
-				modalWindowRect.position = new Vector2((Screen.width - modalWindowRect.width) / 2f, (Screen.height - modalWindowRect.height) / 2f);
-				GUI.ModalWindow((int)WindowIDs.GameOver, modalWindowRect, this.GameOverWindow, "Game Over!");
+				GUI.ModalWindow((int)WindowIDs.GameOver, modalWindowRect, this.GameLostWindow, "Game Over!");
 			}
 
 			// Company Info
@@ -83,6 +90,7 @@ public class LorriesList : MonoBehaviour {
 		if (GUILayout.Button("Begin!")) {
 			started = true;
 			playing = true;
+			startTime = DateTime.Now;
 		}
 	}
 
@@ -265,7 +273,7 @@ public class LorriesList : MonoBehaviour {
 		transform.Find("/Galaxy").GetComponent<Galaxy>().CloseWindow();
 	}
 
-	void GameOverWindow(int windowID) {
+	void GameLostWindow(int windowID) {
 		GUILayout.Label("You went bankrupt! Sorry to hear about that.");
 
 		GUILayout.FlexibleSpace();
@@ -278,5 +286,28 @@ public class LorriesList : MonoBehaviour {
 
 	public void SelectLorry(Lorry lorry) {
 		selectedLorry = lorries.IndexOf(lorry);
+	}
+
+	public void OnGameWon() {
+		gameWon = true;
+		endTime = DateTime.Now;
+
+		timespan = endTime.Subtract(startTime);
+	}
+
+	void GameWonWindow(int windowID) {
+		GUILayout.Label("Thanks to the power of capitalism and your smooth management, the entire galaxy now belongs to you!");
+		GUILayout.Label("With nobody powerful enough to stop you, taxes are raised, freedoms removed, and a new age of oppression begins.");
+
+		GUILayout.FlexibleSpace();
+
+		GUILayout.Label(string.Format("You devoured the galaxy in {0:[h’]:’mm’:’ss[.FFF]}", timespan));
+
+		GUILayout.FlexibleSpace();
+
+		if (GUILayout.Button("Start New Game")) {
+			Application.LoadLevel("playscene");
+			return;
+		}
 	}
 }

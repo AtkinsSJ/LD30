@@ -124,8 +124,7 @@ public class Galaxy : MonoBehaviour {
 			GUILayout.Label(string.Format("Earns you ${0} in tax", activePlanet.taxValue));
 		} else {
 			if (GUILayout.Button(string.Format("Buy planet for ${0}", activePlanet.costToBuy))) {
-				lorriesList.ModifyFunds(-activePlanet.costToBuy);
-				activePlanet.isOwnedByPlayer = true;
+				BuyPlanet(activePlanet);
 			}
 		}
 
@@ -154,5 +153,27 @@ public class Galaxy : MonoBehaviour {
 		}
 
 		GUI.DragWindow();
+	}
+
+	private void BuyPlanet(Planet planet) {
+		if (planet.isOwnedByPlayer) return;
+
+		lorriesList.ModifyFunds(-planet.costToBuy);
+		planet.isOwnedByPlayer = true;
+
+		// Does the player own all the planets?
+		bool ownAll = true;
+		foreach (Planet p in planets) {
+			if (!p.isOwnedByPlayer) {
+				ownAll = false;
+				break;
+			}
+		}
+
+		if (ownAll) {
+			// YOU WIN!
+			CloseWindow();
+			lorriesList.OnGameWon();
+		}
 	}
 }
