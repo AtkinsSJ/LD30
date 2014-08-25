@@ -44,7 +44,7 @@ public class LorriesList : MonoBehaviour {
 
 		galaxy = transform.Find("/Galaxy").GetComponent<Galaxy>();
 
-		modalWindowRect = new Rect(0, 0, 500, 300);
+		modalWindowRect = new Rect(0, 0, 500, 350);
 	}
 
 	void OnGUI() {
@@ -61,7 +61,7 @@ public class LorriesList : MonoBehaviour {
 				windowRect = GUILayout.Window((int)WindowIDs.LorriesList, windowRect, this.LorriesWindow, "Lorries");
 
 				if (selectedLorry != -1) {
-					lorryWindowRect = GUILayout.Window((int)WindowIDs.Lorry, lorryWindowRect, this.LorryInspectionWindow, lorries[selectedLorry].lorryName);
+					lorryWindowRect = GUILayout.Window((int)WindowIDs.Lorry, lorryWindowRect, this.LorryInspectionWindow, "Lorry");
 
 					if (showAddOrderWindow) {
 						addOrderWindowRect = GUILayout.Window((int)WindowIDs.AddOrder, addOrderWindowRect, this.AddOrderWindow, "Add order");
@@ -138,6 +138,8 @@ public class LorriesList : MonoBehaviour {
 		Route route = lorry.route;
 		Route.Stop routeStop = lorry.routeStop;
 		Route.Stop[] stops = route.Stops;
+
+		lorry.lorryName = GUILayout.TextField(lorry.lorryName);
 
 		if (GUILayout.Button(lorry.isRunning ? "Click to stop" : "Click to start")) {
 			lorry.isRunning = !lorry.isRunning;
