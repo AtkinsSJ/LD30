@@ -14,6 +14,7 @@ public class LorriesList : MonoBehaviour {
 	private List<Lorry> lorries = new List<Lorry>();
 
 	private Rect windowRect;
+	private Vector2 windowScroll = new Vector2();
 	private int selectedLorry = -1;
 	private Rect lorryWindowRect;
 	private Vector2 lorryWindowScroll = new Vector2();
@@ -21,6 +22,8 @@ public class LorriesList : MonoBehaviour {
 
 	private bool showAddOrderWindow = false;
 	private Rect addOrderWindowRect;
+	private Vector2 orderWindowPlanetScroll = new Vector2();
+	private Vector2 orderWindowActionScroll = new Vector2();
 	private int addOrderPlanetSelected = -1;
 	private int addOrderActionSelected = -1;
 
@@ -66,7 +69,7 @@ public class LorriesList : MonoBehaviour {
 			if (gameWon) {
 				GUI.ModalWindow((int)WindowIDs.GameOver, modalWindowRect, this.GameWonWindow, "YOU WIN!");
 			} else if (playing) {
-				windowRect = GUILayout.Window((int)WindowIDs.LorriesList, windowRect, this.LorriesWindow, "Lorries", GUILayout.Height(Screen.height-20));
+				windowRect = GUILayout.Window((int)WindowIDs.LorriesList, windowRect, this.LorriesWindow, "Lorries");
 
 				if (selectedLorry != -1) {
 					lorryWindowRect = GUILayout.Window((int)WindowIDs.Lorry, lorryWindowRect, this.LorryInspectionWindow, "Lorry");
@@ -112,7 +115,7 @@ public class LorriesList : MonoBehaviour {
 			lorryNames[i] = lorries[i].lorryName;
 		}
 
-		lorryWindowScroll = GUILayout.BeginScrollView(lorryWindowScroll, GUILayout.MinHeight(20), GUILayout.ExpandHeight(true), GUILayout.MaxHeight(Screen.height - 100));
+		windowScroll = GUILayout.BeginScrollView(windowScroll, GUILayout.Height(Math.Min(lorries.Count * 25 + 4, Screen.height/3f)));
 		int newlySelectedLorry = GUILayout.SelectionGrid(selectedLorry, lorryNames, 1);
 		if (newlySelectedLorry != selectedLorry && newlySelectedLorry != -1) {
 			SelectLorry(newlySelectedLorry);
@@ -193,6 +196,7 @@ public class LorriesList : MonoBehaviour {
 
 		GUILayout.Label("Orders:");
 
+		lorryWindowScroll = GUILayout.BeginScrollView(lorryWindowScroll, GUILayout.Height(150));
 		GUILayout.BeginVertical();
 
 		for (int i = 0; i < stops.Length; i++) {
@@ -212,6 +216,7 @@ public class LorriesList : MonoBehaviour {
 		}
 
 		GUILayout.EndVertical();
+		GUILayout.EndScrollView();
 
 		if (GUILayout.Button("Add Order")) {
 			showAddOrderWindow = true;
@@ -233,7 +238,9 @@ public class LorriesList : MonoBehaviour {
 
 		// Planet selector!
 		int oldPlanetSelected = addOrderPlanetSelected;
+		orderWindowPlanetScroll = GUILayout.BeginScrollView(orderWindowPlanetScroll, GUILayout.Height(150));
 		addOrderPlanetSelected = GUILayout.SelectionGrid(addOrderPlanetSelected, galaxy.planetNames.ToArray(), 1);
+		GUILayout.EndScrollView();
 
 		if (oldPlanetSelected != addOrderPlanetSelected) {
 			addOrderActionSelected = -1;
@@ -259,7 +266,9 @@ public class LorriesList : MonoBehaviour {
 				actionLabels[i + sellableGoods.Length] = string.Format("Buy {0} at ${1} each", Good.GOODS[buyableGoods[i]].pluralName, planet.goodValues[buyableGoods[i]]);
 			}
 
+			orderWindowActionScroll = GUILayout.BeginScrollView(orderWindowActionScroll, GUILayout.Height(150));
 			addOrderActionSelected = GUILayout.SelectionGrid(addOrderActionSelected, actionLabels, 1);
+			GUILayout.EndScrollView();
 
 			if (addOrderActionSelected != -1) {
 				// DONE!
