@@ -31,8 +31,24 @@ public class Planet : MonoBehaviour {
 		get { return selling; }
 	}
 
+	private bool ownedByPlayer = false;
+	public bool isOwnedByPlayer {
+		get { return ownedByPlayer; }
+		set { ownedByPlayer = value; }
+	}
+	internal int costToBuy = 1500;
+	internal int taxValue = 150;
+
+	private PopupManager popups;
+	private LorriesList lorriesList;
+
 	// Use this for initialization
 	void Start() {
+
+		// Connect things up
+		popups = transform.Find("/PopupManager").GetComponent<PopupManager>();
+		lorriesList = transform.Find("/Lorries").GetComponent<LorriesList>();
+
 		// Find the highlight!
 		highlightTransform = transform.Find("Highlight");
 		highlightTransform.gameObject.SetActive(false);
@@ -87,6 +103,9 @@ public class Planet : MonoBehaviour {
 		}
 		this.planetName = pn;
 		galaxy.planetNames.Add(pn);
+
+		// Regular update
+		StartCoroutine(PlanetUpdate());
 	}
 
 	private void GenerateBuyingSellingLists() {
@@ -130,5 +149,16 @@ public class Planet : MonoBehaviour {
 		int result = quantity * -goodValues[(int)goodType];
 		if (result <= 0) throw new System.ArgumentException("This planet refuses to buy " + goodType + "!");
 		return result;
+	}
+
+	private IEnumerator PlanetUpdate() {
+		while (true) {
+			if (ownedByPlayer) {
+				// Give player income
+				lorriesList.ModifyFunds(taxValue);
+				popups.AddIncomePopup(taxValue, transform.position);
+			}
+			yield return new WaitForSeconds(5f);
+		}
 	}
 }

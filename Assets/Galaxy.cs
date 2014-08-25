@@ -29,6 +29,7 @@ public class Galaxy : MonoBehaviour {
 	}
 
 	private Camera mainCamera;
+	private LorriesList lorriesList;
 
 	private Planet activePlanet;
 	private int activePlanetWindow = -1;
@@ -39,8 +40,9 @@ public class Galaxy : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 
-		// Find the camera!
+		// Find things!
 		mainCamera = transform.Find("/Camera").camera;
+		lorriesList = transform.Find("/Lorries").GetComponent<LorriesList>();
 
 		// Build the galaxy!
 		int planetsToCreate = Random.Range(minPlanets, maxPlanets + 1);
@@ -116,6 +118,15 @@ public class Galaxy : MonoBehaviour {
 		if (GUI.Button(planetWindowCloseButtonRect, "X")) {
 			CloseWindow();
 			return;
+		}
+
+		if (activePlanet.isOwnedByPlayer) {
+			GUILayout.Label(string.Format("Earns you ${0} in tax", activePlanet.taxValue));
+		} else {
+			if (GUILayout.Button(string.Format("Buy planet for ${0}", activePlanet.costToBuy))) {
+				lorriesList.ModifyFunds(-activePlanet.costToBuy);
+				activePlanet.isOwnedByPlayer = true;
+			}
 		}
 
 		GUILayout.Label("Goods for sale:");

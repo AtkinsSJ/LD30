@@ -19,7 +19,7 @@ public class PopupManager : MonoBehaviour {
 			this.text = text;
 			this.worldPosition = worldPosition;
 			this.style = style;
-			this.life = 3.5f;
+			this.life = 2.5f;
 		}
 	}
 
