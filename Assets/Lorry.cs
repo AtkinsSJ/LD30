@@ -17,7 +17,7 @@ public class Lorry : MonoBehaviour {
 	private Color normalColour;
 
 	public Route route = new Route();
-	private int routeStopIndex;
+	internal int routeStopIndex;
 	internal Route.Stop routeStop;
 
 	public float movementSpeed = 1f;

@@ -35,6 +35,8 @@ public class LorriesList : MonoBehaviour {
 	private DateTime endTime;
 	private TimeSpan timespan;
 
+	private GUIStyle activeOrderStyle;
+
 	// Use this for initialization
 	void Start () {
 		windowRect = new Rect(10, 10, 250, 100);
@@ -48,6 +50,11 @@ public class LorriesList : MonoBehaviour {
 	}
 
 	void OnGUI() {
+
+		if (activeOrderStyle == null) {
+			activeOrderStyle = new GUIStyle(GUI.skin.label);
+			activeOrderStyle.normal.textColor = new Color(1, 1, 0);
+		}
 		modalWindowRect.position = new Vector2((Screen.width - modalWindowRect.width) / 2f, (Screen.height - modalWindowRect.height) / 2f);
 
 		if (!started) {
@@ -185,11 +192,15 @@ public class LorriesList : MonoBehaviour {
 
 		GUILayout.BeginVertical();
 
-
 		for (int i = 0; i < stops.Length; i++) {
 			Route.Stop stop = stops[i];
+
 			GUILayout.BeginHorizontal();
-			GUILayout.Label(string.Format("{0} {1} at {2}", stop.stopType, Good.GOODS[(int)stop.goodType].pluralName, stop.planet.planetName));
+			if (lorry.routeStopIndex == i) {
+				GUILayout.Label(string.Format("{0} {1} at {2}", stop.stopType, Good.GOODS[(int)stop.goodType].pluralName, stop.planet.planetName), activeOrderStyle);
+			} else {
+				GUILayout.Label(string.Format("{0} {1} at {2}", stop.stopType, Good.GOODS[(int)stop.goodType].pluralName, stop.planet.planetName));
+			}
 			GUILayout.FlexibleSpace();
 			if (GUILayout.Button("X")) {
 				route.RemoveStop(i);
